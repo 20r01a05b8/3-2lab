@@ -1,0 +1,53 @@
+import pandas as pd
+import numpy as np
+
+train=pd.read_csv('/content/gdrive/MyDrive/CSE B/3-2/mlds lab/week8 train.csv')
+test=pd.read_csv('/content/gdrive/MyDrive/CSE B/3-2/mlds lab/week8 train.csv')
+
+train['Loan_Status']=train['Loan_Status'].map({'Y': True, 'N': False})
+
+train['ApplicantIncome']=train['ApplicantIncome'].astype(float)   
+
+data_numerical=train.select_dtypes(include='float64')
+data_categorical=train.select_dtypes(include='object')
+
+from sklearn.impute import SimpleImputer
+imputer=SimpleImputer(missing_values=np.nan, strategy='mean')
+data_numerical=imputer.fit_transform(data_numerical)
+data_numerical=pd.DataFrame(data_numerical)
+
+from sklearn.preprocessing import OrdinalEncoder
+enc=OrdinalEncoder()
+enc_data=enc.fit_transform(data_categorical)
+enc_data=pd.DataFrame(enc_data)
+
+trainset=pd.concat([data_numerical,enc_data],axis=1)
+
+from sklearn.impute import SimpleImputer
+imputer=SimpleImputer(missing_values=np.nan, strategy='mean')
+trainset=imputer.fit_transform(trainset)
+trainset=pd.DataFrame(trainset)
+
+from sklearn.model_selection import train_test_split
+X,X_test,y,y_test=train_test_split(trainset, train['Loan_Status'], test_size=0.25, random_state=42)
+
+from sklearn.linear_model import LogisticRegression
+lrmodel=LogisticRegression(max_iter=1000)
+lrmodel.fit(X,y)
+logisticregression_predictions=lrmodel.predict(X_test)
+
+from sklearn.metrics import confusion_matrix, classification_report
+print(confusion_matrix(y_test,logisticregression_predictions))
+print(classification_report(y_test,logisticregression_predictions))
+
+#graphs
+
+df['Loan_Status'].value_counts().plot.bar()
+
+df['Credit_History'].value_counts(normalize=True).plot.bar(title='Credit_History')
+
+bins=[0,2500,4000,6000,81000]
+group=['Low','Average','High','Very High']
+df['Income_bin']=pd.cut(df['ApplicantIncome'],bins,labels=group)
+Income_bin=pd.crosstab(df['Income_bin'],df['Loan_Status'])
+Income_bin.div(Income_bin.sum(1).astype(float),axis=0).plot(kind="bar",stacked=True)

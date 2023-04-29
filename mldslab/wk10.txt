@@ -1,0 +1,49 @@
+import pandas as pd
+import numpy as np
+import matplotlib
+import matplotlib.pyplot as plt
+import seaborn as sns
+
+data=pd.read_csv('/content/gdrive/MyDrive/CSE B/3-2/mlds lab/week10matches.csv')
+
+data=data.drop(['umpire3'],axis=1)
+
+data=data.dropna()
+data_numerical=data.select_dtypes('int64')
+data_categorical=data.select_dtypes('object')
+cat_columns=data_categorical.columns
+from sklearn.preprocessing import OrdinalEncoder
+enc=OrdinalEncoder();
+enc_data=enc.fit_transform(data_categorical)
+enc_data=pd.DataFrame(enc_data,columns=cat_columns)
+
+df=pd.concat([data_numerical,enc_data],axis=1)
+df=df.dropna()
+label=df['winner']
+df=df.drop(['winner'],axis=1)
+from sklearn.model_selection import train_test_split
+X,X_test,y,y_test=train_test_split(df,label,random_state=32,test_size=0.2)
+
+from sklearn.ensemble import RandomForestClassifier
+rfc=RandomForestClassifier(n_estimators=100,max_depth=6)
+rfc.fit(X,y)
+rfcans=rfc.predict(X_test)
+
+#output:
+from sklearn.metrics import classification_report, confusion_matrix
+print(confusion_matrix(y_test,rfcans))
+print(classification_report(y_test,rfcans))
+
+#graph
+plt.figure(figsize = (10,6))
+sns.countplot(y = 'winner',data = data,order= data['winner'].value_counts().index)
+plt.xlabel('Wins')
+plt.title('Number of  IPL  matches won by each team')
+
+plt.figure(figsize = (10,6))
+sns.countplot(x = "toss_decision", data=data)
+plt.xlabel('Toss Decision',fontsize=12)
+plt.ylabel('Count',fontsize=12)
+plt.title('Toss Decision')
+
+

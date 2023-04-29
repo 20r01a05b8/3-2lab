@@ -1,0 +1,37 @@
+wk1:
+
+import io 
+import csv
+import pandas as pd
+from google.colab import files 
+uploaded=files.upload()
+num_attributes=7
+
+a=[]
+print("the given data set is :")
+with open ("climate.csv",'r') as csvfile:
+    reader=csv.reader(csvfile)
+    for row in reader:
+      a.append(row)
+      print(row)
+
+print("the initial hypothesis")
+hypothesis=['0']*num_attributes
+print(hypothesis)
+
+for j in range(0,num_attributes):
+    hypothesis[j]=a[1][j]
+print(hypothesis)
+
+print(len(a))
+for j in range(0,num_attributes):
+    hypothesis[j]=a[1][j]
+print(hypothesis)
+for i in range(1,len(a)):
+  if a[i][num_attributes]=='Yes' or a[i][num_attributes]=='yes':
+    for j in range(1,num_attributes):
+      if a[i][j]!=hypothesis[j]:
+        hypothesis[j]='?'
+      
+  print("for training instance no:",i,"the hypothesis is:",hypothesis)
+

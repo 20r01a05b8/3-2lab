@@ -1,0 +1,55 @@
+import pandas as pd
+from sklearn.linear_model import LogisticRegression
+from sklearn.model_selection import train_test_split
+from sklearn.metrics import accuracy_score
+from sklearn.impute import SimpleImputer
+
+# Load the data
+df = pd.read_csv('/content/gdrive/MyDrive/CSE B/3-2/mlds lab/week8 train.csv')
+test=pd.read_csv('/content/gdrive/MyDrive/CSE B/3-2/mlds lab/week8 train.csv')
+# Preprocess the data
+X = df.drop("Loan_Status", axis=1)
+
+y = df["Loan_Status"]
+X = pd.get_dummies(X)
+
+# Impute missing values with median
+imp = SimpleImputer(strategy="median")
+X = imp.fit_transform(X)
+
+# Split the data into training and testing sets
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+
+# Train the logistic regression model
+clf = LogisticRegression(max_iter=10000)
+clf.fit(X_train, y_train)
+
+# Make predictions on the test data
+y_pred = clf.predict(X_test)
+
+# Evaluate the model
+accuracy = accuracy_score(y_test, y_pred)
+print("Accuracy:", accuracy)
+
+#output:
+from sklearn.linear_model import LogisticRegression
+lrmodel=LogisticRegression(max_iter=1000)
+lrmodel.fit(X,y)
+logisticregression_predictions=lrmodel.predict(X_test)
+
+from sklearn.metrics import confusion_matrix, classification_report
+print(confusion_matrix(y_test,logisticregression_predictions))
+print(classification_report(y_test,logisticregression_predictions))
+
+#graphs
+df['Loan_Status'].value_counts().plot.bar()
+
+df['Credit_History'].value_counts(normalize=True).plot.bar(title='Credit_History')
+
+train.groupby('Loan_Status')['ApplicantIncome'].mean().plot.bar()
+
+bins=[0,2500,4000,6000,81000]
+group=['Low','Average','High','Very High']
+df['Income_bin']=pd.cut(df['ApplicantIncome'],bins,labels=group)
+Income_bin=pd.crosstab(df['Income_bin'],df['Loan_Status'])
+Income_bin.div(Income_bin.sum(1).astype(float),axis=0).plot(kind="bar",stacked=True)
