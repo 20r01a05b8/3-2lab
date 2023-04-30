@@ -1,0 +1,47 @@
+import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+import seaborn as sns
+df = pd.read_csv('matches.csv')
+df.head()
+df = df.drop('umpire3',axis=1)
+df.head()
+df.isna().sum()
+df = df.dropna()
+df.head()
+df.isna().sum()
+#graph:
+sns.countplot(y='venue',data=df,order = df['venue'].value_counts().iloc[:10].index)
+
+plt.figure(figsize = (10,6))
+sns.countplot(x = "toss_decision", data=df)
+plt.xlabel('Toss Decision',fontsize=12)
+plt.ylabel('Count',fontsize=12)
+plt.title('Toss Decision')
+
+
+df.loc[df['winner']==df['team1'],'team1_win']=1
+df.loc[df['winner']!=df['team1'],'team1_win']=0
+
+df.loc[df['toss_winner']==df['team1'],'team1_toss_win']=1
+df.loc[df['toss_winner']==df['team1'],'team1_toss_win']=0
+df.columns
+df = df.drop('team1_toss_win',axis=1)
+df.head()
+df['team1_win'].value_counts()
+df = df[['season','city','team1','team2','winner','team1_win']]
+
+df.head()
+X = df.drop('team1_win',axis=1)
+X = pd.get_dummies(X)
+y = df['team1_win']
+from sklearn.model_selection import train_test_split
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, random_state=42)
+from sklearn.ensemble import RandomForestClassifier
+rfc = RandomForestClassifier(n_estimators=200,max_depth=6)
+rfc.fit(X_train,y_train)
+pred = rfc.predict(X_test)
+pred
+from sklearn.metrics import classification_report,confusion_matrix
+print(classification_report(y_test,pred))
+print(confusion_matrix(y_test,pred))
