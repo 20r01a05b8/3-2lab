@@ -1,0 +1,63 @@
+//week3:
+//blu-ulta
+#include <SoftwareSerial.h>
+
+SoftwareSerial BTSerial(10, 11); // Set up a software serial port for Bluetooth communication
+
+int trigPin = 2; // Set the ultrasonic sensor trigger pin to pin 2
+int echoPin = 3; // Set the ultrasonic sensor echo pin to pin 3
+bool objectDetected = false; // Initialize a variable to store whether or not an object has been detected
+
+void setup() {
+  Serial.begin(9600); // Start the serial communication with the computer
+  BTSerial.begin(9600); // Start the Bluetooth communication
+  pinMode(trigPin, OUTPUT); // Set the ultrasonic sensor trigger pin as an output
+  pinMode(echoPin, INPUT); // Set the ultrasonic sensor echo pin as an input
+}
+
+void loop() {
+  digitalWrite(trigPin, LOW); // Set the ultrasonic sensor trigger pin to low for 2 microseconds
+  delayMicroseconds(2);
+  digitalWrite(trigPin, HIGH); // Set the ultrasonic sensor trigger pin to high for 10 microseconds
+  delayMicroseconds(10);
+  digitalWrite(trigPin, LOW); // Set the ultrasonic sensor trigger pin to low again
+  int duration = pulseIn(echoPin, HIGH); // Measure the duration of the ultrasonic pulse
+  int distance = duration * 0.034 / 2; // Convert the duration to distance in centimeters
+  if (distance < 20) { // If an object is detected within 20 centimeters
+    if (!objectDetected) { // If this is the first time an object has been detected
+      BTSerial.println("Object detected!"); // Send a message via Bluetooth to the mobile phone
+      objectDetected = true; // Set the variable to true to indicate that an object has been detected
+    }
+  } else { // If no object is detected
+    objectDetected = false; // Set the variable to false to indicate that no object has been detected
+  }
+  delay(100); // Wait for 100 milliseconds
+}
+
+//blu-ir
+
+#include <SoftwareSerial.h>
+
+SoftwareSerial BTSerial(10, 11); // Set up a software serial port for Bluetooth communication
+
+int irPin = 2; // Set the IR sensor pin to pin 2
+bool objectDetected = false; // Initialize a variable to store whether or not an object has been detected
+
+void setup() {
+  Serial.begin(9600); // Start the serial communication with the computer
+  BTSerial.begin(9600); // Start the Bluetooth communication
+  pinMode(irPin, INPUT); // Set the IR sensor pin as an input
+}
+
+void loop() {
+  int irValue = digitalRead(irPin); // Read the value from the IR sensor
+  if (irValue == LOW) { // If an object is detected
+    if (!objectDetected) { // If this is the first time an object has been detected
+      BTSerial.println("Object detected!"); // Send a message via Bluetooth to the mobile phone
+      objectDetected = true; // Set the variable to true to indicate that an object has been detected
+    }
+  } else { // If no object is detected
+    objectDetected = false; // Set the variable to false to indicate that no object has been detected
+  }
+  delay(100); // Wait for 100 milliseconds
+}
