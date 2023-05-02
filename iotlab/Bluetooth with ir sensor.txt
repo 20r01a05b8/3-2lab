@@ -1,0 +1,25 @@
+//Bluetooth with ir sensor 
+#include<SoftwareSerial.h>
+SoftwareSerial BT(10,11);
+int data;
+const int irPin=6;
+void setup()  {
+  pinMode(irPin,INPUT);
+  BT.begin(9600);
+  }
+ 
+void loop(){
+  int val;
+  if (BT.available())
+  {
+    val=digitalRead(irPin);
+    data=BT.read();
+    if(data==val)
+    {
+      BT.print("object detected");
+    }
+    else
+    BT.print("object not detedted");
+    }
+  delay(10000);
+}
