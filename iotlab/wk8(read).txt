@@ -44,7 +44,7 @@ void loop() {
       // Fetch the stored data
 
       int temp = ThingSpeak.getFieldAsInt(field[0]); // Field 1
-      float hum = ThingSpeak.getFieldAsFloat(field[1]); // Field 2
+      int hum = ThingSpeak.getFieldAsFloat(field[1]); // Field 2
       
       Serial.println("temperature"+temp);
       Serial.println("humidity:"+hum);
