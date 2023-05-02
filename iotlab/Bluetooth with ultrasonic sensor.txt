@@ -1,0 +1,27 @@
+#include<SoftwareSerial.h>
+SoftwareSerial BT(10,11);
+const int trig=10;
+const int echo=11;
+long dis;
+long dur;
+
+void setup() {
+  pinMode(trig,OUTPUT);
+  pinMode(echo,INPUT);
+  Serial.begin(9600);
+  BT.begin(9600);
+}
+
+void loop() {
+  digitalWrite(trig,LOW);
+  delay(2000);
+  digitalWrite(trig,HIGH);
+  delay(5000);
+  digitalWrite(trig,LOW);
+  dur=pulseIn(echo,HIGH);
+  dis=dur*(0.034/2);
+  BT.println("Distance");
+  BT.println(dis);
+  // put your main code here, to run repeatedly:
+
+}
