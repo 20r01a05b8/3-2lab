@@ -1,0 +1,50 @@
+<!doctype html>
+<html>
+<head>
+
+    <title> Moving Car </title>
+    <style>
+        body{
+            background-image: url("road1.jpg");
+            background-size: cover;
+        }
+        .building1 {
+            position: relative;
+            left : 200px;
+            top : 300px ;
+        }
+        .sun{
+            position: fixed;
+            left:100px;
+            top:0px;
+            animation: rise 5s infinite;
+        }
+        .car{
+            position: fixed;
+            top : 350px;
+            animation: moveit 10s infinite;
+        }
+        @keyframes rise {
+            0%{ top:30%; left:0;}
+            50%{ top:0; left :50%;}
+            100%{ top:30%; left:100%;}
+        }
+        @keyframes moveit {
+            0%{left:0;}
+            100%{left:100%;}
+        }
+
+
+
+    </style>
+
+</head>
+<body>
+
+<div class="building1"> <img src="building2-removebg-preview.png" height="400px" width="550px"> </div>
+<div class="sun"> <img src="sun-removebg-preview.png" height="300px" width="300px"> </div>
+<div class="car"> <img src="car2-removebg-preview.png" height="400px" width="400px"> </div>
+
+
+</body>
+</html>
