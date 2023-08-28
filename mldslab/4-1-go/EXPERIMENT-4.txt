@@ -1,0 +1,39 @@
+EXPERIMENT-4
+Write a GO Program to calculate Standard deviation in math package
+package main
+import (
+"fmt"
+"math"
+)
+func main(){
+var num[10] float64
+var sum,mean,sd float64
+fmt.Println("****** Enter 10 elements *******")
+for i := 1; i <= 10; i++ {
+fmt.Printf("Enter %d element : ",i)
+fmt.Scan(&num[i-1])
+sum += num[i-1]
+}
+mean = sum/10;
+for j := 0; j < 10; j++ {
+// The use of Pow math function func Pow(x, y float64)
+float64
+sd += math.Pow(num[j] - mean, 2)
+}
+// The use of Sqrt math function func Sqrt(x float64) float64
+sd = math.Sqrt(sd/10)
+fmt.Println("The Standard Deviation is : ",sd)
+}
+Output:
+****** Enter 10 elements *******
+Enter 1 element : 3
+Enter 2 element : 5
+Enter 3 element : 9
+Enter 4 element : 1
+Enter 5 element : 8
+Enter 6 element : 6
+Enter 7 element : 58
+Enter 8 element : 9
+Enter 9 element : 4
+Enter 10 element : 10
+The Standard Deviation is : 15.8117045254457

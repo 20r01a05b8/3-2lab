@@ -1,0 +1,20 @@
+EXPERIMENT-6
+Write a GO Program to take user input and addition of two strings.
+package main
+import "fmt"
+func main() {
+fmt.Print("Enter First String: ") //Print function is used
+to display output in same line
+var first string
+fmt.Scanln(&first) // Take input from
+user
+fmt.Print("Enter Second String: ")
+var second string
+fmt.Scanln(&second)
+fmt.Print(first + second) // Addition of two
+string
+}
+Output:
+Enter First String: Go
+Enter Second String: Programming
+GoProgramming
