@@ -1,5 +1,7 @@
 EXPERIMENT-3
 Write a program to use struct that is imported from another package.
+
+Week-3:
 package main
 import (
 parent "family/father"
@@ -7,34 +9,35 @@ child "family/father/son"
 "fmt"
 )
 func main() {
-f := new(parent.Father)
-fmt.Println(f.Data("Mr. Jeremy Maclin"))
-c := new(child.Son)
-fmt.Println(c.Data("Riley Maclin"))
+	f := new(parent.Father)
+	fmt.Println(f.Data("Mr. Jeremy Maclin"))
+	c := new(child.Son)
+	fmt.Println(c.Data("Riley Maclin"))
 }
 package father
 import "fmt"
 func init() {
-fmt.Println("Father package initialized")
+	fmt.Println("Father package initialized")
 }
 type Father struct {
-Name string
+	Name string
 }
 func (f Father) Data(name string) string {
-f.Name = "Father : " + name
-return f.Name
+	f.Name = "Father : " + name
+	return f.Name
 }
+
 package son
 import "fmt"
 func init() {
-fmt.Println("Son package initialized")
+	fmt.Println("Son package initialized")
 }
 type Son struct {
-Name string
+	Name string
 }
 func (s Son) Data(name string) string {
-s.Name = "Son : " + name
-return s.Name
+	s.Name = "Son : " + name
+	return s.Name
 }
 Output:
 Father package initialized
