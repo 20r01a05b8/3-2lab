@@ -1,0 +1,16 @@
+{{if .Success}}
+<p>Your message has been sent!</p>
+{{else}}
+<p>Contact</p>
+<form action="/contact" method="POST">
+    <label>Name:</label><br />
+    <input type="text" name="name"><br />
+    <label>Email:</label><br />
+    <input type="text" name="email"><br />
+    <label>Subject:</label><br />
+    <input type="text" name="subject"><br />
+    <label>Message:</label><br />
+    <textarea name="message"></textarea><br /><br />
+    <input type="submit">
+</form>
+{{end}}
